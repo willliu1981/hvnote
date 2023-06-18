@@ -3,6 +3,8 @@
   <component name="CompilerConfiguration">
     <bytecodeTargetLevel target="1.7">
       <module name="HVnote.app" target="11" />
+      <module name="HVnote.app.androidlib" target="11" />
+      <module name="HVnote.app.lib" target="11" />
     </bytecodeTargetLevel>
   </component>
 </project>
