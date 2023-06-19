@@ -86,7 +86,7 @@ public class AndroidDBFactory extends BaseDBFactory {
             }
         } else {
             Toast.makeText(context, "db is exists:", Toast.LENGTH_SHORT).show();
-            System.out.println("xxx ADBConn :db is exists:"+file.getAbsolutePath());
+            //System.out.println("xxx ADBConn :db is exists:"+file.getAbsolutePath());
         }
         return file.getAbsolutePath();
 
