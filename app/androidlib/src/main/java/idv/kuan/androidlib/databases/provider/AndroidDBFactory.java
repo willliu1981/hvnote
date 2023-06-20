@@ -22,6 +22,8 @@ public class AndroidDBFactory extends BaseDBFactory {
 
     private static Context context;
 
+
+
     public AndroidDBFactory(Context context) {
         AndroidDBFactory.context = context;
     }

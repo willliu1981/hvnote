@@ -11,6 +11,7 @@ import java.sql.SQLException;
 
 import idv.kuan.androidlib.databases.provider.AndroidDBFactory;
 import idv.kuan.libs.databases.BaseDBFactory;
+import idv.kuan.libs.databases.DBFactoryCreator;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -20,24 +21,29 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        BaseDBFactory dbFactory = new AndroidDBFactory(this);
+        // DBFactory dbFactory = new AndroidDBFactory(this);
+
+        BaseDBFactory dbFactory = BaseDBFactory.getFactory(new AndroidDBFactory(this));
         dbFactory.config("android1", "hv.db", "hv.db");
-        Connection connection = dbFactory.getConnection("android1");
         //System.out.println("xxx MA:" + connection);
 
         //changeTable(connection);
 
-        testSave(connection);
+        testSave();
 
-        testQuery(connection, 11);
+        testQueryAll();
 
     }
 
-    private void testSave(Connection connection) {
+    private void testSave() {
+
+        BaseDBFactory factory = DBFactoryCreator.getFactory("android1");
+
+
         String sql = "insert into statement_table (statement)" +
                 "values (?)";
         try {
-            PreparedStatement preparedStatement = connection.prepareStatement(sql);
+            PreparedStatement preparedStatement = factory.getConnection().prepareStatement(sql);
             preparedStatement.setString(1, "B3 1號溫停止" + (int) (Math.random() * 10000));
             //preparedStatement.setString(2, "房務");
             //preparedStatement.setInt(3, 0);
@@ -51,7 +57,9 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    private void testQuery(Connection connection, int id) {
+    private void testQueryAll() {
+        Connection connection = BaseDBFactory.getFactory("android1").getConnection();
+
         String sql = "select * from statement_table ";
         try {
             PreparedStatement preparedStatement = connection.prepareStatement(sql);
