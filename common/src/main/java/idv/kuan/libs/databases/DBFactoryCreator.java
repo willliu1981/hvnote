@@ -11,6 +11,14 @@ public class DBFactoryCreator {
     }
 
     public static BaseDBFactory getFactory(BaseDBFactory factory) {
+
+        for (BaseDBFactory dbFactory : dbFactories.values()) {
+            if (factory.getClass().getName().equals(dbFactory.getClass().getName())) {
+
+                return dbFactory;
+            }
+        }
+
         return factory;
     }
 
