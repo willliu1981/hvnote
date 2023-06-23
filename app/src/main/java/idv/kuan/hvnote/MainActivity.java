@@ -8,6 +8,11 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Timestamp;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.TimeZone;
 
 import idv.kuan.androidlib.databases.provider.AndroidDBFactory;
 import idv.kuan.libs.databases.BaseDBFactory;
@@ -21,6 +26,19 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        BaseDBFactory dbFactory = DBFactoryCreator.getFactory(new AndroidDBFactory(this));
+        System.out.println("xxx MA 1:" + dbFactory);
+        dbFactory.config("android1", "hv.db", "hv.db");
+        BaseDBFactory dbFactory2 = DBFactoryCreator.getFactory("android1");
+        System.out.println("xxx MA 2:" + dbFactory2);
+
+        BaseDBFactory dbFactory3 = DBFactoryCreator.getFactory(new AndroidDBFactory(this));
+        System.out.println("xxx MA 3:" + dbFactory3);
+        dbFactory3.config("android2", "hv.db", "hv.db");
+        BaseDBFactory dbFactory4 = DBFactoryCreator.getFactory("android2");
+        System.out.println("xxx MA 4:" + dbFactory4);
+        /*
+
         // DBFactory dbFactory = new AndroidDBFactory(this);
 
         BaseDBFactory dbFactory = BaseDBFactory.getFactory(new AndroidDBFactory(this));
@@ -32,6 +50,8 @@ public class MainActivity extends AppCompatActivity {
         testSave();
 
         testQueryAll();
+
+         */
 
     }
 
@@ -79,6 +99,12 @@ public class MainActivity extends AppCompatActivity {
                 System.out.println("xxx MA atCreated:" + atCreated);
                 System.out.println("xxx MA category:" + category);
 
+                if (atCreated != null) {
+                    Timestamp timestamp = Timestamp.valueOf(atCreated);
+                    GMTtoLocal(timestamp);
+
+                }
+
             }
 
         } catch (SQLException e) {
@@ -119,6 +145,24 @@ public class MainActivity extends AppCompatActivity {
             e.printStackTrace();
         }
 
+    }
+
+    private Timestamp GMTtoLocal(Timestamp gmt) {
+
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        formatter.setTimeZone(TimeZone.getTimeZone("GMT"));
+        try {
+            final Date parse1 = formatter.parse(gmt.toString());
+
+            formatter.setTimeZone(TimeZone.getTimeZone(TimeZone.getDefault().getID()));
+            final String format2 = formatter.format(parse1);
+            System.out.println("xxx MA format2:" + format2);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+
+        return null;
     }
 
 
