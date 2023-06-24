@@ -3,7 +3,9 @@ package idv.kuan.hvnote.database.daos;
 import java.io.Serializable;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
 import idv.kuan.hvnote.database.models.Statement;
@@ -16,21 +18,22 @@ public class StatementDao implements Dao<Statement> {
 
     @Override
     public void create(Statement entity) throws SQLException {
-        upsertOrUpdateEntity(entity);
+        createOrUpdateEntity(entity);
     }
 
 
     @Override
-    public Statement findById(Serializable id) {
-        return null;
+    public Statement findById(Serializable id) throws SQLException {
+        return findByIDOrAll(new Statement());
     }
 
     @Override
     public void update(Statement entity) throws SQLException {
-        upsertOrUpdateEntity(entity);
+        createOrUpdateEntity(entity);
     }
 
-    public void upsertOrUpdateEntity(Statement entity) throws SQLException {
+    @Override
+    public void createOrUpdateEntity(Statement entity) throws SQLException {
         if (entity == null) {
             throw new SQLException("entity is null");
         }
@@ -78,8 +81,51 @@ public class StatementDao implements Dao<Statement> {
     }
 
     @Override
-    public List<Statement> findAll() {
-        return null;
+    public List<Statement> findAll() throws SQLException {
+        return findByIDOrAll(new Statement());
     }
 
+    @Override
+    public <U> U findByIDOrAll(Statement entity) throws SQLException {
+        if (entity == null) {
+            throw new SQLException("entity is null");
+        }
+        Connection connection = DBFactoryCreator.getFactory().getConnection();
+        String sqlQuery = "select * from " + tableName;
+        PreparedStatement preparedStatement = null;
+        if (entity.getId() == null) {
+            preparedStatement = connection.prepareStatement(sqlQuery);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            ArrayList<Statement> list = new ArrayList<>();
+            Statement statement = null;
+            while (resultSet.next()) {
+                statement = new Statement();
+                populateEntityProperties(statement, resultSet);
+                list.add(statement);
+            }
+
+            return (U) list;
+
+        } else {
+            preparedStatement = connection.prepareStatement(sqlQuery + " where id=?");
+            preparedStatement.setInt(1, entity.getId());
+            ResultSet resultSet = preparedStatement.executeQuery();
+            Statement statement = new Statement();
+            if (resultSet.next()) {
+                populateEntityProperties(statement, resultSet);
+            }
+            return (U) statement;
+        }
+
+    }
+
+    private void populateEntityProperties(Statement statement, ResultSet resultSet) throws SQLException {
+        statement.setId(resultSet.getInt("id"));
+        statement.setStatement(resultSet.getString("statement"));
+        statement.setCategory(resultSet.getString("category"));
+        statement.setFavorite(resultSet.getInt("is_favorite"));
+        statement.setArchived(resultSet.getInt("is_archived"));
+        statement.setAtCreated(resultSet.getString("at_created"));
+        statement.setAtUpdated(resultSet.getString("at_updated"));
+    }
 }

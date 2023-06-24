@@ -9,14 +9,13 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Timestamp;
+import java.util.List;
 
 import idv.kuan.androidlib.databases.provider.AndroidDBFactory;
 import idv.kuan.hvnote.database.daos.StatementDao;
 import idv.kuan.hvnote.database.models.Statement;
 import idv.kuan.libs.databases.BaseDBFactory;
-import idv.kuan.libs.databases.DBFactoryCreator;
 import idv.kuan.libs.databases.Dao;
-import idv.kuan.libs.databases.utils.QueryBuilder;
 import idv.kuan.libs.date.TimestampConverter;
 
 
@@ -55,9 +54,12 @@ public class MainActivity extends AppCompatActivity {
 
         //testSave();
         //testUpdate();
-        testUpsert();
+        //testUpsert();
 
         testQueryAll();
+
+        testFindAll();
+        testFindById();
 
     }
 
@@ -98,7 +100,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void testUpsert() {
 
-        StatementDao dao = new StatementDao();
+        Dao dao = new StatementDao();
         Statement st = new Statement();
 
         st.setId(46);
@@ -108,7 +110,7 @@ public class MainActivity extends AppCompatActivity {
         st.setArchived(false);
 
         try {
-            dao.upsertOrUpdateEntity(st);
+            dao.createOrUpdateEntity(st);
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -146,6 +148,29 @@ public class MainActivity extends AppCompatActivity {
 
             }
 
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void testFindAll() {
+        Dao dao = new StatementDao();
+        Statement st = new Statement();
+        try {
+            List<Statement> list = (List<Statement>) dao.findByIDOrAll(st);
+            System.out.println("xxx MA list:" + list.size());
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void testFindById() {
+        Dao dao = new StatementDao();
+        Statement st = new Statement();
+        st.setId(45);
+        try {
+            Statement statement = (Statement) dao.findByIDOrAll(st);
+            System.out.println("xxx MA statement: id=" + statement.getId() + "; statement=" + statement.getStatement());
         } catch (SQLException e) {
             e.printStackTrace();
         }
