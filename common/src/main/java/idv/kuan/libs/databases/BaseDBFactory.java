@@ -8,18 +8,29 @@ public abstract class BaseDBFactory extends DBFactoryCreator {
 
     private HashMap<String, String[]> commands = new HashMap<>();
 
-    protected BaseDBFactory(){};
+    protected BaseDBFactory() {
+    }
+
+    ;
 
     public BaseDBFactory config(String id, String... commands) {
         this.commands.put(id, commands);
-        dbFactories.put(id, this);
-        getID = id;
-        return this;
+        putDBFactories(id, this);
+
+        return getAndInitializeDBFactory(id);
     }
+
+    private void putDBFactories(String id, BaseDBFactory DBFactory) {
+        if (defaultKey == null) {
+            defaultKey = id;
+        }
+        DBFactories.put(id, DBFactory);
+    }
+
 
     public Connection getConnection() {
 
-        return getConnection(this.commands.get(getID));
+        return getConnection(this.commands.get(currentId));
     }
 
 

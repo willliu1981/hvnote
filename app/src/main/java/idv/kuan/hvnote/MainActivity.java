@@ -11,9 +11,12 @@ import java.sql.SQLException;
 import java.sql.Timestamp;
 
 import idv.kuan.androidlib.databases.provider.AndroidDBFactory;
+import idv.kuan.hvnote.database.daos.StatementDao;
+import idv.kuan.hvnote.database.models.Statement;
 import idv.kuan.libs.databases.BaseDBFactory;
 import idv.kuan.libs.databases.DBFactoryCreator;
-import idv.kuan.libs.databases.utils.TableSchemaModifier;
+import idv.kuan.libs.databases.Dao;
+import idv.kuan.libs.databases.utils.QueryBuilder;
 import idv.kuan.libs.date.TimestampConverter;
 
 
@@ -25,19 +28,16 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
 
-        //*
-
         // DBFactory dbFactory = new AndroidDBFactory(this);
 
         BaseDBFactory dbFactory = BaseDBFactory.getFactory(new AndroidDBFactory(this));
         dbFactory.config("android1", "hv.db", "hv.db");
+        Connection connection = dbFactory.getConnection();
         //System.out.println("xxx MA:" + connection);
 
         //changeTable(connection);
 
-
-
-
+        /*
         String sql = "CREATE TABLE \"statement_table\" (" +
                 "\"id\"INTEGER NOT NULL UNIQUE," +
                 "\"statement\"TEXT NOT NULL," +
@@ -50,30 +50,65 @@ public class MainActivity extends AppCompatActivity {
                 ")";
         TableSchemaModifier.evolveTableStructure(dbFactory.getConnection(), "statement_table",
                 "statement_table", sql);
-
-        testSave();
-        testQueryAll();
         //*/
+
+
+        //testSave();
+        //testUpdate();
+        testUpsert();
+
+        testQueryAll();
 
     }
 
+
     private void testSave() {
 
-        BaseDBFactory factory = DBFactoryCreator.getFactory("android1");
+        Dao dao = new StatementDao();
+        Statement st = new Statement();
 
+        st.setStatement("test st3");
+        st.setCategory("COMMON3");
+        st.setFavorite(false);
+        st.setArchived(false);
 
-        String sql = "insert into statement_table (statement)" +
-                "values (?)";
         try {
-            PreparedStatement preparedStatement = factory.getConnection().prepareStatement(sql);
-            preparedStatement.setString(1, "B3 1號溫停止" + (int) (Math.random() * 10000));
-            //preparedStatement.setString(2, "房務");
-            //preparedStatement.setInt(3, 0);
-            //preparedStatement.setInt(4, 0);
-            //preparedStatement.setString(5, "2023-06-19 22:10:02");
-            //preparedStatement.setString(5, "2023-06-19 22:10:02");
+            dao.create(st);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
 
-            preparedStatement.execute();
+    private void testUpdate() {
+
+        Dao dao = new StatementDao();
+        Statement st = new Statement();
+
+        st.setId(45);
+        st.setStatement("test st3-1");
+        st.setCategory("COMMON3A");
+
+
+        try {
+            dao.update(st);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void testUpsert() {
+
+        StatementDao dao = new StatementDao();
+        Statement st = new Statement();
+
+        st.setId(46);
+        st.setStatement("test st5");
+        st.setCategory("COMMON5");
+        st.setFavorite(false);
+        st.setArchived(false);
+
+        try {
+            dao.upsertOrUpdateEntity(st);
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -90,6 +125,7 @@ public class MainActivity extends AppCompatActivity {
             ResultSet resultSet = preparedStatement.executeQuery();
             int idx = 1;
             while (resultSet.next()) {
+                int id = resultSet.getInt("id");
                 String statement = resultSet.getString("statement");
                 String atCreated = resultSet.getString("at_created");
                 String category = resultSet.getString("category");
@@ -97,6 +133,7 @@ public class MainActivity extends AppCompatActivity {
 
 
                 System.out.println("xxx MA ------:" + idx++);
+                System.out.println("xxx MA id:" + id);
                 System.out.println("xxx MA statement:" + statement);
                 System.out.println("xxx MA atCreated:" + atCreated);
                 System.out.println("xxx MA category:" + category);
@@ -113,8 +150,6 @@ public class MainActivity extends AppCompatActivity {
             e.printStackTrace();
         }
     }
-
-
 
 
 }
