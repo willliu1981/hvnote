@@ -2,6 +2,7 @@ package idv.kuan.hvnote;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.os.Build;
 import android.os.Bundle;
 
 import java.sql.Connection;
@@ -58,8 +59,10 @@ public class MainActivity extends AppCompatActivity {
 
         testQueryAll();
 
+
+        testDelete();
         testFindAll();
-        testFindById();
+        //testFindById();
 
     }
 
@@ -158,6 +161,15 @@ public class MainActivity extends AppCompatActivity {
         Statement st = new Statement();
         try {
             List<Statement> list = (List<Statement>) dao.findByIDOrAll(st);
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                list.forEach(x -> System.out.println("xxx MA element: id=" + x.getId() +
+                        "; statement=" + x.getStatement()));
+            } else {
+                for (Statement element : list) {
+                    System.out.println("xxx MA element: id=" + element.getId() +
+                            "; statement=" + element.getStatement());
+                }
+            }
             System.out.println("xxx MA list:" + list.size());
         } catch (SQLException e) {
             e.printStackTrace();
@@ -176,5 +188,15 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    private void testDelete(){
+        Dao dao = new StatementDao();
+        Statement st = new Statement();
+        st.setId(45);
+        try {
+            dao.delete(st);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
 
 }

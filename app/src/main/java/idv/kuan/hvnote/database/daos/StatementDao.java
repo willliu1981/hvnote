@@ -76,8 +76,20 @@ public class StatementDao implements Dao<Statement> {
 
 
     @Override
-    public void delete(Statement entity) {
+    public void delete(Statement entity) throws SQLException {
+        Connection connection = DBFactoryCreator.getFactory().getConnection();
+        String sqlQuery = "delete from " + tableName + " where id=?";
+        PreparedStatement preparedStatement = connection.prepareStatement(sqlQuery);
+        if (entity == null) {
+            throw new SQLException("entity is null");
+        }
 
+        if (entity.getId() == null) {
+            throw new SQLException("id is null");
+        }
+
+        preparedStatement.setInt(1, entity.getId());
+        preparedStatement.execute();
     }
 
     @Override

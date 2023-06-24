@@ -16,7 +16,7 @@ public interface Dao<T> {
         throw new UnsupportedOperationException("upsert() is not yet implemented");
     }
 
-    void delete(T entity);
+    void delete(T entity) throws SQLException;
 
     List<T> findAll() throws SQLException;
 
