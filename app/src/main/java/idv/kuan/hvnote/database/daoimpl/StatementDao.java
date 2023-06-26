@@ -1,4 +1,4 @@
-package idv.kuan.hvnote.database.daos;
+package idv.kuan.hvnote.database.daoimpl;
 
 import java.io.Serializable;
 import java.sql.Connection;

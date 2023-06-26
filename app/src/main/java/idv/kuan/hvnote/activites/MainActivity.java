@@ -1,4 +1,4 @@
-package idv.kuan.hvnote;
+package idv.kuan.hvnote.activites;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -13,7 +13,8 @@ import java.sql.Timestamp;
 import java.util.List;
 
 import idv.kuan.androidlib.databases.provider.AndroidDBFactory;
-import idv.kuan.hvnote.database.daos.StatementDao;
+import idv.kuan.hvnote.R;
+import idv.kuan.hvnote.database.daoimpl.StatementDao;
 import idv.kuan.hvnote.database.models.Statement;
 import idv.kuan.libs.databases.BaseDBFactory;
 import idv.kuan.libs.databases.Dao;
