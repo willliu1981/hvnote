@@ -101,4 +101,17 @@ public class Statement implements Serializable {
         }
 
     }
+
+    @Override
+    public String toString() {
+        return "Statement{" +
+                "id=" + id +
+                ", statement='" + statement + '\'' +
+                ", category='" + category + '\'' +
+                ", isFavorite=" + isFavorite +
+                ", isArchived=" + isArchived +
+                ", atCreated=" + atCreated +
+                ", atUpdated=" + atUpdated +
+                '}';
+    }
 }
