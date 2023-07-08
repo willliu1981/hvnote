@@ -35,13 +35,12 @@ public class EntranceActivity extends AppCompatActivity {
         btn_entrance = findViewById(R.id.entr_btn_manage_phrases);
         txtv_debug = findViewById(R.id.entr_txtv_debug);
 
-/* test
+//* test
         StatementsDao dao=new StatementsDao();
         try {
-            List<Statement> all = dao.findAll();
-            for(Statement st:all){
-                System.out.println("xxx MA:st="+st);
-            }
+            Statement st=new Statement();
+            st.setId(47);
+           dao.delete(st);
 
         } catch (SQLException e) {
             e.printStackTrace();

@@ -40,12 +40,6 @@ public class StatementsDao extends CommonDao<Statement> {
     }
 
 
-    @Override
-    public void delete(Statement entity) throws SQLException {
-
-    }
-
-
     protected void mapResultSetToEntity(Statement entity, ResultSet resultSet) throws SQLException {
         entity.setId(resultSet.getInt("id"));
         entity.setStatement(resultSet.getString("statement"));
