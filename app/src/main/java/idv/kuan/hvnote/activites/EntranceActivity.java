@@ -59,7 +59,7 @@ public class EntranceActivity extends AppCompatActivity {
                 Statement st = new Statement();
                 st.setId(47);
                 try {
-                    Statement statement = dao.findByIDOrAll(st);
+                    Statement statement = dao.findById(st);
                     intent.putExtra("st1", (Serializable) statement);
                     startActivity(intent);
                 } catch (SQLException e) {

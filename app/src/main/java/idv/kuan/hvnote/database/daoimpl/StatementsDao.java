@@ -13,6 +13,13 @@ import idv.kuan.libs.databases.daos.CommonDao;
 import idv.kuan.libs.databases.utils.QueryBuilder;
 
 public class StatementsDao extends CommonDao<Statement> {
+
+
+    @Override
+    protected Statement createNewEntity() {
+        return new Statement();
+    }
+
     @Override
     protected void populateBuilderWithEntityProperties(QueryBuilder builder, Statement entity) {
         builder.addColumnValue("statement", entity.getStatement());
@@ -32,59 +39,12 @@ public class StatementsDao extends CommonDao<Statement> {
         return "statement_table";
     }
 
-    @Override
-    public Statement findById(Statement entity) throws SQLException {
-        return findByIDOrAll(entity);
-    }
 
     @Override
     public void delete(Statement entity) throws SQLException {
 
     }
 
-    @Override
-    public List<Statement> findAll() throws SQLException {
-        return findByIDOrAll(new Statement());
-    }
-
-    @Override
-    protected Statement createNewEntity() {
-        return new Statement();
-    }
-
-    @Override
-    public <U> U findByIDOrAll(Statement entity) throws SQLException {
-
-        if (entity == null) {
-            throw new SQLException("entity is null");
-        }
-        Connection connection = DBFactoryCreator.getFactory().getConnection();
-        String sqlQuery = "select * from " + getTableName();
-        PreparedStatement preparedStatement = null;
-        if (entity.getId() == null) {
-            preparedStatement = connection.prepareStatement(sqlQuery);
-            ResultSet resultSet = preparedStatement.executeQuery();
-            ArrayList<Statement> list = new ArrayList<>();
-            Statement statement = null;
-            while (resultSet.next()) {
-                statement = new Statement();
-                mapResultSetToEntity(statement, resultSet);
-                list.add(statement);
-            }
-
-            return (U) list;
-
-        } else {
-            preparedStatement = connection.prepareStatement(sqlQuery + " where id=?");
-            preparedStatement.setInt(1, entity.getId());
-            ResultSet resultSet = preparedStatement.executeQuery();
-            Statement statement = new Statement();
-            if (resultSet.next()) {
-                mapResultSetToEntity(statement, resultSet);
-            }
-            return (U) statement;
-        }
-    }
 
     protected void mapResultSetToEntity(Statement entity, ResultSet resultSet) throws SQLException {
         entity.setId(resultSet.getInt("id"));
