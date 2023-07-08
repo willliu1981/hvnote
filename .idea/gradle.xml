@@ -11,8 +11,8 @@
           <set>
             <option value="$PROJECT_DIR$" />
             <option value="$PROJECT_DIR$/app" />
-            <option value="$PROJECT_DIR$/app/androidlib" />
-            <option value="$PROJECT_DIR$/common" />
+            <option value="$PROJECT_DIR$/../Kuanlibs/common" />
+            <option value="$PROJECT_DIR$/../Kuanlibs/kuanandroidlibs" />
           </set>
         </option>
       </GradleProjectSettings>

@@ -15,5 +15,7 @@ dependencyResolutionManagement {
 rootProject.name = "HVnote"
 include ':app'
 include ':common'
+project(':common').projectDir=new File('../Kuanlibs/common');
 
-include ':app:androidlib'
+include ':kuanandroidlibs'
+project(':kuanandroidlibs').projectDir=new File('../Kuanlibs/kuanandroidlibs');

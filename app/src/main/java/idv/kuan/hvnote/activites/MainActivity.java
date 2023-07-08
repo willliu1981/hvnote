@@ -2,23 +2,17 @@ package idv.kuan.hvnote.activites;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.os.Build;
 import android.os.Bundle;
 
 import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Timestamp;
 import java.util.List;
 
-import idv.kuan.androidlib.databases.provider.AndroidDBFactory;
 import idv.kuan.hvnote.R;
-import idv.kuan.hvnote.database.daoimpl.StatementDao;
+import idv.kuan.hvnote.database.daoimpl.StatementsDao;
 import idv.kuan.hvnote.database.models.Statement;
+import idv.kuan.kuanandroidlibs.databases.provider.AndroidDBFactory;
 import idv.kuan.libs.databases.BaseDBFactory;
-import idv.kuan.libs.databases.Dao;
-import idv.kuan.libs.date.TimestampConverter;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -34,6 +28,20 @@ public class MainActivity extends AppCompatActivity {
         BaseDBFactory dbFactory = BaseDBFactory.getFactory(new AndroidDBFactory(this));
         dbFactory.config("android1", "hv.db", "hv.db");
         Connection connection = dbFactory.getConnection();
+
+
+        StatementsDao dao=new StatementsDao();
+        try {
+            List<Statement> all = dao.findAll();
+            for(Statement st:all){
+                System.out.println("xxx MA:st="+st);
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+
         //System.out.println("xxx MA:" + connection);
 
         //changeTable(connection);
@@ -58,16 +66,16 @@ public class MainActivity extends AppCompatActivity {
         //testUpdate();
         //testUpsert();
 
-        testQueryAll();
+        //testQueryAll();
 
 
-        testDelete();
-        testFindAll();
+        //testDelete();
+        //testFindAll();
         //testFindById();
 
     }
 
-
+/*
     private void testSave() {
 
         Dao dao = new StatementDao();
@@ -199,5 +207,6 @@ public class MainActivity extends AppCompatActivity {
             e.printStackTrace();
         }
     }
+    //*/
 
 }

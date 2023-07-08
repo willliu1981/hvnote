@@ -42,7 +42,8 @@ dependencies {
 
 
     implementation project(':common')
-    implementation project(':app:androidlib')
+    implementation project(path: ':kuanandroidlibs')
+
 
 
 

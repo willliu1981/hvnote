@@ -5,6 +5,8 @@
       <module name="HVnote.app" target="11" />
       <module name="HVnote.app.androidlib" target="11" />
       <module name="HVnote.app.lib" target="11" />
+      <module name="HVnote.kuanandroidlibs" target="11" />
+      <module name="Kuanlibs.HVnote.kuanandroidlibs" target="11" />
     </bytecodeTargetLevel>
   </component>
 </project>

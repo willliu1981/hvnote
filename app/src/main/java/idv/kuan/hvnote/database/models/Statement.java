@@ -1,9 +1,10 @@
 package idv.kuan.hvnote.database.models;
 
-import java.io.Serializable;
 import java.sql.Timestamp;
 
-public class Statement implements Serializable {
+import idv.kuan.libs.databases.models.CommonEntity;
+
+public class Statement implements CommonEntity {
     private Integer id;
     private String statement;
     private String category;
@@ -15,6 +16,7 @@ public class Statement implements Serializable {
     public Integer getId() {
         return id;
     }
+
 
     public void setId(Integer id) {
         this.id = id;

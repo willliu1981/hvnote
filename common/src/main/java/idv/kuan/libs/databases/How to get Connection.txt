@@ -1,4 +1,0 @@
-直接使用DBFactory類別
-1.  DBFactory.config 以初始化DBConnection 的參數
-2.  DBConnection是一個抽像類別,需要實作,例如AndroidDBConnection和DefaultDBConnection
-3.  DBFactory.config() 第一個參數是sql db provider,第二個是擴展的commands,於DBConnection中實現
