@@ -1,4 +1,4 @@
-package idv.kuan.hvnote.activites;
+package idv.kuan.hvnote.views.activites;
 
 import androidx.appcompat.app.AppCompatActivity;
 
