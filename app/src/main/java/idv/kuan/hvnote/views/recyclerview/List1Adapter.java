@@ -6,32 +6,21 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
-import java.util.Timer;
-import java.util.TimerTask;
 
 import idv.kuan.hvnote.R;
 import idv.kuan.hvnote.database.models.Statement;
+import idv.kuan.hvnote.listener.ToggleListener;
 import idv.kuan.hvnote.views.activites.ManagePhrasesActivite;
 
-public class List1Adapter extends RecyclerView.Adapter {
+public class List1Adapter extends RecyclerView.Adapter implements ToggleListener {
     private ArrayList<Statement> list;
     private String dcType;
 
-    public List1Adapter(ArrayList<Statement> list, String dcType) {
+    public List1Adapter(ArrayList<Statement> list) {
         this.list = list;
-        this.dcType = dcType;
-    }
-
-    public void setDcType(String dcType) {
-        this.dcType = dcType;
-    }
-
-    public String getDcType() {
-        return this.dcType;
     }
 
 
@@ -70,5 +59,10 @@ public class List1Adapter extends RecyclerView.Adapter {
     @Override
     public int getItemCount() {
         return list.size();
+    }
+
+    @Override
+    public void update(String data) {
+        this.dcType = data;
     }
 }

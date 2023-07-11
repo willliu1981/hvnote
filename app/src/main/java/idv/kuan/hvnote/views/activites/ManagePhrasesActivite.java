@@ -15,17 +15,19 @@ import java.util.ArrayList;
 import idv.kuan.hvnote.R;
 import idv.kuan.hvnote.database.daoimpl.StatementsDao;
 import idv.kuan.hvnote.database.models.Statement;
+import idv.kuan.hvnote.listener.SwitchAction;
+import idv.kuan.hvnote.listener.ToggleListener;
 import idv.kuan.hvnote.views.recyclerview.List1Adapter;
 
-public class ManagePhrasesActivite extends AppCompatActivity {
-    public  final static String DC_EDIT = "ED";
+public class ManagePhrasesActivite extends AppCompatActivity implements ToggleListener {
+    public final static String DC_EDIT = "ED";
     public final static String DC_COPY = "CP";
 
     private RecyclerView recyclerView;
     private Button btn_dcType;
 
-    private String dcType;
     private List1Adapter adapter;
+    private SwitchAction switchAction = new SwitchAction();
 
 
     //debug
@@ -46,14 +48,13 @@ public class ManagePhrasesActivite extends AppCompatActivity {
                 Button button = (Button) view;
                 if (button.getText().equals(DC_COPY)) {
                     button.setText(DC_EDIT);
-                    dcType = DC_EDIT;
+                    switchAction.setToggle(DC_EDIT);
 
                 } else {
                     button.setText(DC_COPY);
-                    dcType = DC_COPY;
+                    switchAction.setToggle(DC_COPY);
 
                 }
-                adapter.setDcType(dcType);
             }
         });
 
@@ -70,9 +71,12 @@ public class ManagePhrasesActivite extends AppCompatActivity {
     }
 
     private void init() {
-        dcType = DC_COPY;
 
         initComps();
+
+
+        switchAction.registerObserver(this);
+        switchAction.setToggle(DC_COPY);
     }
 
     private void initComps() {
@@ -87,7 +91,8 @@ public class ManagePhrasesActivite extends AppCompatActivity {
             } catch (SQLException e) {
                 e.printStackTrace();
             }
-            adapter = new List1Adapter(all, this.dcType);
+            adapter = new List1Adapter(all);
+            switchAction.registerObserver(adapter);
             recyclerView.setAdapter(adapter);
 
             System.out.println("xxx MPA:size=" + all.size());
@@ -103,4 +108,9 @@ public class ManagePhrasesActivite extends AppCompatActivity {
     }
 
 
+    @Override
+    public void update(String data) {
+        btn_dcType.setText(data);
+
+    }
 }
