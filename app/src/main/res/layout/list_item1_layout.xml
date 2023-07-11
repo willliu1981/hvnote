@@ -4,7 +4,10 @@
     android:layout_height="wrap_content"
     android:orientation="horizontal">
 
-    <!--  rv.list_item  -->
+    <!--  rv.list_item
+        rv:RecyclerView
+    -->
+
     <!--  備忘字
         horizontal
         vertical

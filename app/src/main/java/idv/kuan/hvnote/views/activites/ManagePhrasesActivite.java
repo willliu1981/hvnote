@@ -4,9 +4,11 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.app.Dialog;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
 
 import java.sql.SQLException;
@@ -24,9 +26,11 @@ public class ManagePhrasesActivite extends AppCompatActivity implements ToggleLi
     public final static String DC_COPY = "CP";
 
     private RecyclerView recyclerView;
-    private Button btn_dcType;
+    private Button btn_dcType, btn_listAddItem;
 
-    private List1Adapter adapter;
+
+    private List1Adapter adpStatement;
+    ArrayList<Statement> lstStatement;
     private SwitchAction switchAction = new SwitchAction();
 
 
@@ -41,6 +45,54 @@ public class ManagePhrasesActivite extends AppCompatActivity implements ToggleLi
 
         init();
 
+
+        //debug
+        initDebugComps();
+        btn_debug.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+            }
+        });
+
+    }
+
+    private void init() {
+
+        initComps();
+        compsSetAction();
+
+
+        switchAction.registerObserver(this);
+        switchAction.setToggle(DC_COPY);
+    }
+
+
+    private void initComps() {
+        recyclerView = findViewById(R.id.mp_rv_list1);
+        {
+            RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this);
+            recyclerView.setLayoutManager(layoutManager);
+            StatementsDao dao = new StatementsDao();
+
+            try {
+                lstStatement = (ArrayList<Statement>) dao.findAll();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+            adpStatement = new List1Adapter(lstStatement);
+            switchAction.registerObserver(adpStatement);
+            recyclerView.setAdapter(adpStatement);
+
+            System.out.println("xxx MPA:size=" + lstStatement.size());
+        }
+
+        btn_dcType = findViewById(R.id.mp_btn_dc_type);
+        btn_listAddItem = findViewById(R.id.mp_btn_list_add_item);
+
+    }
+
+    private void compsSetAction() {
 
         btn_dcType.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -58,48 +110,49 @@ public class ManagePhrasesActivite extends AppCompatActivity implements ToggleLi
             }
         });
 
-
-        //debug
-        initDebugComps();
-        btn_debug.setOnClickListener(new View.OnClickListener() {
+        btn_listAddItem.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                Dialog dialog = new Dialog(ManagePhrasesActivite.this);
+                dialog.setContentView(R.layout.list_item_add_dialog);
+
+                EditText edtv_statement = dialog.findViewById(R.id.dig_list_add_item_edtv_statement);
+                EditText edtv_category = dialog.findViewById(R.id.dig_list_add_item_edtv_category);
+
+                Button btn_cancel = dialog.findViewById(R.id.dig_list_add_item_btn_cancel);
+                Button btn_create = dialog.findViewById(R.id.dig_list_add_item_btn_create);
+
+                btn_cancel.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        dialog.dismiss();
+                    }
+                });
+
+                btn_create.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        StatementsDao dao = new StatementsDao();
+                        Statement statement = new Statement();
+                        statement.setStatement(edtv_statement.getText().toString());
+                        statement.setCategory(edtv_category.getText().toString());
+
+                        try {
+                            dao.create(statement);
+                        } catch (SQLException e) {
+                            e.printStackTrace();
+                        }
+
+                        dialog.dismiss();
+                        lstStatement.add(statement);
+                        adpStatement.notifyDataSetChanged();
+                    }
+                });
+
+                dialog.show();
 
             }
         });
-
-    }
-
-    private void init() {
-
-        initComps();
-
-
-        switchAction.registerObserver(this);
-        switchAction.setToggle(DC_COPY);
-    }
-
-    private void initComps() {
-        recyclerView = findViewById(R.id.mp_rv_list1);
-        {
-            RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this);
-            recyclerView.setLayoutManager(layoutManager);
-            StatementsDao dao = new StatementsDao();
-            ArrayList<Statement> all = null;
-            try {
-                all = (ArrayList<Statement>) dao.findAll();
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
-            adapter = new List1Adapter(all);
-            switchAction.registerObserver(adapter);
-            recyclerView.setAdapter(adapter);
-
-            System.out.println("xxx MPA:size=" + all.size());
-        }
-
-        btn_dcType = findViewById(R.id.mp_btn_db_type);
-
     }
 
     private void initDebugComps() {

@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <!--  dig.list_item_edit
+            dig:dialog
+        -->
+
+
+    <TextView
+        android:id="@+id/dig.list_item_edit.txtv.title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="32dp"
+        android:layout_marginEnd="32dp"
+        android:text="Title"
+        android:textSize="24sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/txtv1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="32dp"
+        android:layout_marginEnd="32dp"
+        android:text="Statement"
+        android:textSize="24sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/dig.list_item_edit.txtv.title" />
+
+    <TextView
+        android:id="@+id/txtv2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="32dp"
+        android:layout_marginEnd="32dp"
+        android:text="Category"
+        android:textSize="24sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@+id/dig.list_item_edit.edtv.statement"
+        app:layout_constraintTop_toBottomOf="@+id/dig.list_item_edit.edtv.statement" />
+
+    <EditText
+        android:id="@+id/dig.list_item_edit.edtv.statement"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:hint="Statement"
+        android:inputType="textPersonName"
+        app:layout_constraintStart_toStartOf="@+id/txtv1"
+        app:layout_constraintTop_toBottomOf="@+id/txtv1" />
+
+    <EditText
+        android:id="@+id/dig.list_item_edit.edtv.category"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:hint="Category"
+        android:inputType="textPersonName"
+        app:layout_constraintStart_toStartOf="@+id/txtv2"
+        app:layout_constraintTop_toBottomOf="@+id/txtv2" />
+
+    <Button
+        android:id="@+id/dig.list_item_edit.btn.update"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:text="Update"
+        app:layout_constraintBottom_toBottomOf="@+id/dig.list_item_edit.btn.cancel"
+        app:layout_constraintStart_toEndOf="@+id/dig.list_item_edit.btn.cancel"
+        app:layout_constraintTop_toTopOf="@+id/dig.list_item_edit.btn.cancel" />
+
+    <Button
+        android:id="@+id/dig.list_item_edit.btn.delete"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:text="Delete"
+        app:layout_constraintBottom_toBottomOf="@+id/dig.list_item_edit.btn.update"
+        app:layout_constraintStart_toEndOf="@+id/dig.list_item_edit.btn.update"
+        app:layout_constraintTop_toTopOf="@+id/dig.list_item_edit.btn.update" />
+
+    <Button
+        android:id="@+id/dig.list_item_edit.btn.cancel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="32dp"
+        android:text="Cancel"
+        app:layout_constraintStart_toStartOf="@+id/dig.list_item_edit.edtv.category"
+        app:layout_constraintTop_toBottomOf="@+id/dig.list_item_edit.edtv.category" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
