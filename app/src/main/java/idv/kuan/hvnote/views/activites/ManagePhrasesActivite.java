@@ -114,7 +114,7 @@ public class ManagePhrasesActivite extends AppCompatActivity implements ToggleLi
             @Override
             public void onClick(View view) {
                 Dialog dialog = new Dialog(ManagePhrasesActivite.this);
-                dialog.setContentView(R.layout.list_item_add_dialog);
+                dialog.setContentView(R.layout.list_add_item_dialog);
 
                 EditText edtv_statement = dialog.findViewById(R.id.dig_list_add_item_edtv_statement);
                 EditText edtv_category = dialog.findViewById(R.id.dig_list_add_item_edtv_category);

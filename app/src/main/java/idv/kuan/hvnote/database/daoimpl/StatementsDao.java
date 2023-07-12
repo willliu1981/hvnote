@@ -30,7 +30,7 @@ public class StatementsDao extends CommonDao<Statement> {
                 entity.getFavorite() == true ? 1 : 0);
         builder.addColumnValue("at_created", entity.getAtCreated() == null ? null :
                 entity.getAtCreated().toString());
-        builder.addColumnValue("at_updated", entity.getAtCreated() == null ? null :
+        builder.addColumnValue("at_updated", entity.getAtUpdated() == null ? null :
                 entity.getAtUpdated().toString());
     }
 

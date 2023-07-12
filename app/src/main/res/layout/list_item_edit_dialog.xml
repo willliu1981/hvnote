@@ -74,29 +74,32 @@
         android:id="@+id/dig.list_item_edit.btn.update"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="32dp"
+        android:layout_marginEnd="32dp"
         android:text="Update"
-        app:layout_constraintBottom_toBottomOf="@+id/dig.list_item_edit.btn.cancel"
-        app:layout_constraintStart_toEndOf="@+id/dig.list_item_edit.btn.cancel"
-        app:layout_constraintTop_toTopOf="@+id/dig.list_item_edit.btn.cancel" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/dig.list_item_edit.edtv.category" />
 
     <Button
         android:id="@+id/dig.list_item_edit.btn.delete"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
         android:text="Delete"
-        app:layout_constraintBottom_toBottomOf="@+id/dig.list_item_edit.btn.update"
-        app:layout_constraintStart_toEndOf="@+id/dig.list_item_edit.btn.update"
-        app:layout_constraintTop_toTopOf="@+id/dig.list_item_edit.btn.update" />
+        app:layout_constraintEnd_toEndOf="@+id/dig.list_item_edit.btn.update"
+        app:layout_constraintStart_toStartOf="@+id/dig.list_item_edit.btn.update"
+        app:layout_constraintTop_toBottomOf="@+id/dig.list_item_edit.btn.update" />
 
     <Button
         android:id="@+id/dig.list_item_edit.btn.cancel"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="32dp"
+        android:layout_marginTop="16dp"
         android:text="Cancel"
-        app:layout_constraintStart_toStartOf="@+id/dig.list_item_edit.edtv.category"
-        app:layout_constraintTop_toBottomOf="@+id/dig.list_item_edit.edtv.category" />
+        app:layout_constraintEnd_toEndOf="@+id/dig.list_item_edit.btn.delete"
+        app:layout_constraintStart_toStartOf="@+id/dig.list_item_edit.btn.delete"
+        app:layout_constraintTop_toBottomOf="@+id/dig.list_item_edit.btn.delete" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
