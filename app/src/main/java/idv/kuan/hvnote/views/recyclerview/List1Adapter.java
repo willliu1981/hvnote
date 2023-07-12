@@ -2,6 +2,9 @@ package idv.kuan.hvnote.views.recyclerview;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
+import android.content.ClipData;
+import android.content.ClipboardManager;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -121,7 +124,7 @@ public class List1Adapter extends RecyclerView.Adapter implements ToggleListener
                                             dialog.dismiss();
                                         }
                                     });
-                            AlertDialog dialog1=builder.create();
+                            AlertDialog dialog1 = builder.create();
                             dialog1.show();
 
                         }
@@ -130,7 +133,13 @@ public class List1Adapter extends RecyclerView.Adapter implements ToggleListener
                     dialog.show();
 
                 } else {
-                    Toast.makeText(view.getContext(), "copy type", Toast.LENGTH_LONG).show();
+                    ClipboardManager clipboardManager = (ClipboardManager) view.getContext().
+                            getSystemService(Context.CLIPBOARD_SERVICE);
+                    ClipData clipData = ClipData.newPlainText("label", statement.getStatement());
+                    clipboardManager.setPrimaryClip(clipData);
+
+
+                    Toast.makeText(view.getContext(), statement.getStatement() + " 已複製至剪貼薄", Toast.LENGTH_LONG).show();
                 }
 
                 return false;
