@@ -6,6 +6,7 @@ import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -29,6 +30,8 @@ import idv.kuan.hvnote.views.activites.ManagePhrasesActivite;
 public class List1Adapter extends RecyclerView.Adapter implements ToggleListener {
     private ArrayList<Statement> list;
     private String dcType;
+    private int selectedPosition = RecyclerView.NO_POSITION;
+
 
     public List1Adapter(ArrayList<Statement> list) {
         this.list = list;
@@ -49,7 +52,29 @@ public class List1Adapter extends RecyclerView.Adapter implements ToggleListener
         ViewHolder1 vh = (ViewHolder1) holder;
         vh.bindData(statement);
 
-        //holder.itemView.findViewById(R.id.rv_list_item_txtv_category);
+        if (selectedPosition == position) {
+            holder.itemView.setBackgroundResource(R.drawable.selected_border);
+        } else {
+            holder.itemView.setBackgroundResource(R.drawable.default_border);
+        }
+
+
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                int clickedPosition = holder.getAdapterPosition();
+                if (selectedPosition == clickedPosition) {
+                    holder.itemView.setBackgroundResource(R.drawable.default_border);
+                    selectedPosition = RecyclerView.NO_POSITION;
+                } else {
+                    holder.itemView.setBackgroundResource(R.drawable.selected_border);
+                    selectedPosition = clickedPosition;
+                }
+                notifyDataSetChanged();
+            }
+        });
+
+
 
         holder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
 

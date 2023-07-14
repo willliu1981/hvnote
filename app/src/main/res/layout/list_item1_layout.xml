@@ -2,7 +2,11 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="horizontal">
+    android:layout_margin="4dp"
+    android:orientation="vertical"
+    android:padding="8dp"
+    android:clickable="true"
+    >
 
     <!--  rv.list_item
         rv:RecyclerView
@@ -21,7 +25,7 @@
         android:layout_weight="1"
         android:text="category"
         android:textColor="@color/orange"
-        android:textSize="24sp"/>
+        android:textSize="24sp" />
 
     <TextView
         android:id="@+id/rv.list_item.txtv.statement"
@@ -31,7 +35,6 @@
         android:text="statement"
         android:textColor="@color/dark_gray"
         android:textSize="24sp" />
-
 
 
 </LinearLayout>
