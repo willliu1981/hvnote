@@ -8,9 +8,12 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
+import java.sql.Connection;
+
 import idv.kuan.hvnote.R;
 import idv.kuan.kuanandroidlibs.databases.provider.AndroidDBFactory;
 import idv.kuan.libs.databases.DBFactoryCreator;
+import idv.kuan.libs.databases.utils.TableSchemaModifier;
 
 public class EntranceActivity extends AppCompatActivity {
 
@@ -44,7 +47,30 @@ public class EntranceActivity extends AppCompatActivity {
     }
 
     private void initDB() {
-        DBFactoryCreator.getFactory(new AndroidDBFactory(this)).
-                config("android1", "hv.db", "hv.db");
+        Connection conn = DBFactoryCreator.getFactory(new AndroidDBFactory(this)).
+                config("android1", "hv.db", "hv.db").getConnection();
+
+
+        Boolean isTableExist = TableSchemaModifier.isTableExist(conn, "memo_table");
+        System.out.println("dbg EA: table is exist? " + isTableExist);
+
+        //*
+        if (isTableExist != null && !isTableExist) {
+            String sql = "CREATE TABLE \"memo_table\" ( " +
+                    " \"id\" INTEGER NOT NULL UNIQUE, " +
+                    " \"title\" TEXT, " +
+                    " \"category\" TEXT DEFAULT 'COMMON', " +
+                    " \"content\" TEXT, " +
+                    " \"is_important\" INTEGER DEFAULT 0, " +
+                    " \"is_completed\" INTEGER DEFAULT 0, " +
+                    " \"at_created\" TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP, " +
+                    " \"at_updated\" TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP, " +
+                    " PRIMARY KEY(\"id\" AUTOINCREMENT) " +
+                    ")";
+
+            TableSchemaModifier.createNew(conn, sql);
+        }
+
+        // */
     }
 }
