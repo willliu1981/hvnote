@@ -45,9 +45,6 @@ dependencies {
     implementation project(':common')
     implementation project(path: ':kuanandroidlibs')
 
-// https://mvnrepository.com/artifact/com.gladed.androidgitversion/com.gladed.androidgitversion.gradle.plugin
-    implementation group: 'com.gladed.androidgitversion', name: 'com.gladed.androidgitversion.gradle.plugin', version: '0.4.14', ext: 'pom'
-
 
 
 }
