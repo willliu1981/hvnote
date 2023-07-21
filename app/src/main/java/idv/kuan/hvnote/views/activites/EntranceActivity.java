@@ -14,8 +14,11 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.List;
 
 import idv.kuan.hvnote.R;
+import idv.kuan.hvnote.database.daoimpl.MemoDao;
+import idv.kuan.hvnote.database.models.Memo;
 import idv.kuan.kuanandroidlibs.databases.provider.AndroidDBFactory;
 import idv.kuan.libs.databases.DBFactoryCreator;
 import idv.kuan.libs.databases.utils.TableSchemaModifier;
@@ -32,6 +35,7 @@ public class EntranceActivity extends AppCompatActivity {
 
         init();
 
+
         btn_entrance = findViewById(R.id.entr_btn_manage_phrases);
         txtv_debug = findViewById(R.id.entr_txtv_debug);
 
@@ -45,6 +49,24 @@ public class EntranceActivity extends AppCompatActivity {
             }
         });
 
+
+        //*dbg...
+
+        MemoDao dao = new MemoDao();
+        Memo entity = new Memo();
+        try {
+            entity.setContent("Memo" + ((int) (Math.random() * 1000)));
+            dao.create(entity);
+
+            List<Memo> all = dao.findAll();
+            for (Memo m : all) {
+                System.out.println("xxx EA:entity=" + m.toString());
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        // */
     }
 
     private void init() {
@@ -64,10 +86,11 @@ public class EntranceActivity extends AppCompatActivity {
         String memoTableCreateSql = "CREATE TABLE \"memo_table\" ( " +
                 " \"id\" INTEGER NOT NULL UNIQUE, " +
                 " \"title\" TEXT, " +
-                " \"category\" TEXT DEFAULT 'COMMON m7', " +
+                " \"category\" TEXT DEFAULT 'COMMON', " +
                 " \"content\" TEXT, " +
                 " \"is_important\" INTEGER DEFAULT 0, " +
                 " \"is_completed\" INTEGER DEFAULT 0, " +
+                " \"is_archived\" INTEGER DEFAULT 0, " +
                 " \"at_created\" TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP, " +
                 " \"at_updated\" TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP, " +
                 " PRIMARY KEY(\"id\" AUTOINCREMENT) " +
@@ -77,7 +100,7 @@ public class EntranceActivity extends AppCompatActivity {
         String statementTableCreateSql = "CREATE TABLE \"statement_table\" ( " +
                 " \"id\" INTEGER NOT NULL UNIQUE, " +
                 " \"statement\" TEXT NOT NULL, " +
-                " \"category\" TEXT DEFAULT 'COMMON s7', " +
+                " \"category\" TEXT DEFAULT 'COMMON', " +
                 " \"is_favorite\" INTEGER DEFAULT 0, " +
                 " \"is_archived\" INTEGER DEFAULT 0, " +
                 " \"at_created\" TEXT DEFAULT CURRENT_TIMESTAMP, " +

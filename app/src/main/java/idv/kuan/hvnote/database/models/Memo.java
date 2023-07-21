@@ -2,13 +2,16 @@ package idv.kuan.hvnote.database.models;
 
 import java.sql.Timestamp;
 
-public class Memo {
+import idv.kuan.libs.databases.models.CommonEntity;
+
+public class Memo implements CommonEntity {
     private Integer id;
     private String title;
-    private  String category;
+    private String category;
     private String content;
     private Boolean isCompleted;
     private Boolean isImportant;
+    private Boolean isArchived;
     private Timestamp atCreated;
     private Timestamp atUpdated;
 
@@ -53,12 +56,33 @@ public class Memo {
         isCompleted = completed;
     }
 
+    public void setCompleted(Integer completed) {
+        isCompleted = completed == 0 ? false : true;
+    }
+
     public Boolean getImportant() {
         return isImportant;
     }
 
     public void setImportant(Boolean important) {
         isImportant = important;
+    }
+
+    public void setImportant(Integer important) {
+        isImportant = important == 0 ? false : true;
+    }
+
+
+    public Boolean getArchived() {
+        return isArchived;
+    }
+
+    public void setArchived(Boolean archived) {
+        isArchived = archived;
+    }
+
+    public void setArchived(Integer archived) {
+        isArchived = archived == 0 ? false : true;
     }
 
     public Timestamp getAtCreated() {
@@ -69,6 +93,10 @@ public class Memo {
         this.atCreated = atCreated;
     }
 
+    public void setAtCreated(String atCreated) {
+        this.atCreated = Timestamp.valueOf(atCreated);
+    }
+
     public Timestamp getAtUpdated() {
         return atUpdated;
     }
@@ -77,15 +105,20 @@ public class Memo {
         this.atUpdated = atUpdated;
     }
 
+    public void setAtUpdated(String atUpdated) {
+        this.atUpdated = Timestamp.valueOf(atUpdated);
+    }
+
     @Override
     public String toString() {
         return "Memo{" +
                 "id=" + id +
                 ", title='" + title + '\'' +
-                ", content='" + content + '\'' +
                 ", category='" + category + '\'' +
+                ", content='" + content + '\'' +
                 ", isCompleted=" + isCompleted +
                 ", isImportant=" + isImportant +
+                ", isArchived=" + isArchived +
                 ", atCreated=" + atCreated +
                 ", atUpdated=" + atUpdated +
                 '}';
