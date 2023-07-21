@@ -3,6 +3,8 @@ package idv.kuan.hvnote.views.activites;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -50,65 +52,52 @@ public class EntranceActivity extends AppCompatActivity {
     }
 
     private void initDB() {
-        Connection conn = DBFactoryCreator.getFactory(new AndroidDBFactory(this)).
+        Connection connection = DBFactoryCreator.getFactory(new AndroidDBFactory(this)).
                 config("android1", "hv.db", "hv.db").getConnection();
 
+        checkAndUpdateDB(connection);
 
-        Boolean isTableExist = TableSchemaModifier.isTableExist(conn, "memo_table");
-        System.out.println("dbg EA: table is exist? " + isTableExist);
+    }
 
-        //*
-        if (isTableExist != null) {
-            if (!isTableExist) {
+    private void checkAndUpdateDB(Connection connection) {
+        String memoTableName = "memo_table";
+        String memoTableCreateSql = "CREATE TABLE \"memo_table\" ( " +
+                " \"id\" INTEGER NOT NULL UNIQUE, " +
+                " \"title\" TEXT, " +
+                " \"category\" TEXT DEFAULT 'COMMON m7', " +
+                " \"content\" TEXT, " +
+                " \"is_important\" INTEGER DEFAULT 0, " +
+                " \"is_completed\" INTEGER DEFAULT 0, " +
+                " \"at_created\" TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP, " +
+                " \"at_updated\" TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP, " +
+                " PRIMARY KEY(\"id\" AUTOINCREMENT) " +
+                ")";
 
-                String sql = "CREATE TABLE \"memo_table\" ( " +
-                        " \"id\" INTEGER NOT NULL UNIQUE, " +
-                        " \"title\" TEXT, " +
-                        " \"category\" TEXT DEFAULT 'COMMON', " +
-                        " \"content\" TEXT, " +
-                        " \"is_important\" INTEGER DEFAULT 0, " +
-                        " \"is_completed\" INTEGER DEFAULT 0, " +
-                        " \"at_created\" TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP, " +
-                        " \"at_updated\" TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP, " +
-                        " PRIMARY KEY(\"id\" AUTOINCREMENT) " +
-                        ")";
+        String statementTableName = "statement_table";
+        String statementTableCreateSql = "CREATE TABLE \"statement_table\" ( " +
+                " \"id\" INTEGER NOT NULL UNIQUE, " +
+                " \"statement\" TEXT NOT NULL, " +
+                " \"category\" TEXT DEFAULT 'COMMON s7', " +
+                " \"is_favorite\" INTEGER DEFAULT 0, " +
+                " \"is_archived\" INTEGER DEFAULT 0, " +
+                " \"at_created\" TEXT DEFAULT CURRENT_TIMESTAMP, " +
+                " \"at_updated\" TEXT DEFAULT CURRENT_TIMESTAMP, " +
+                " PRIMARY KEY(\"id\" AUTOINCREMENT) " +
+                ")";
 
-                TableSchemaModifier.createNew(conn, sql);
-            } else {
-                String sql = "CREATE TABLE \"memo_table\" ( " +
-                        " \"id\" INTEGER NOT NULL UNIQUE, " +
-                        " \"title\" TEXT, " +
-                        " \"category\" TEXT DEFAULT 'COMMON2', " +
-                        " \"content\" TEXT, " +
-                        " \"is_important\" INTEGER DEFAULT 0, " +
-                        " \"is_completed\" INTEGER DEFAULT 0, " +
-                        " \"at_created\" TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP, " +
-                        " \"at_updated\" TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP, " +
-                        " PRIMARY KEY(\"id\" AUTOINCREMENT) " +
-                        ")";
-                TableSchemaModifier.evolveTableStructure(conn, "memo_table", "memo_table", sql);
-
-
-            }
-        }
-
+        PackageManager packageManager = getPackageManager();
         try {
-            PreparedStatement preparedStatement = conn.prepareStatement("PRAGMA table_info(memo_table)");
-            ResultSet resultSet = preparedStatement.executeQuery();
+            PackageInfo packageInfo = packageManager.getPackageInfo(getPackageName(), 0);
+            int appVersionCode = packageInfo.versionCode;
 
-            while (resultSet.next()) {
-                String name = resultSet.getString("name");
-                String type = resultSet.getString("type");
-                String dflt_value = resultSet.getString("dflt_value");
+            TableSchemaModifier.createNewOrEvolveTableStructure(connection, appVersionCode, memoTableName, memoTableCreateSql);
+            TableSchemaModifier.createNewOrEvolveTableStructure(connection, appVersionCode, statementTableName, statementTableCreateSql);
 
-                System.out.println("xxx EA:name= " + name + " , type=" + type + " , dflt_value=" + dflt_value);
-            }
+            TableSchemaModifier.updateDBVersion(connection, appVersionCode);
 
-
-        } catch (SQLException e) {
+        } catch (PackageManager.NameNotFoundException e) {
             e.printStackTrace();
         }
 
-        // */
     }
 }
